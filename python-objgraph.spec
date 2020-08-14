@@ -12,12 +12,19 @@ Source0:        https://files.pythonhosted.org/packages/source/o/%{pypi_name}/%{
 BuildArch:      noarch
  
 BuildRequires:  python%{python3_pkgversion}-devel
-%if 0%{?fedora} >= 28
+%if 0%{?fedora} >= 28 || 0%{?suse_version} == 1500
 BuildRequires:  python%{python3_pkgversion}-graphviz
+%endif
+%if 0%{?suse_version} == 1500
+BuildRequires:  graphviz-gd, graphviz-gnome
 %endif
 BuildRequires:  graphviz
 BuildRequires:  python%{python3_pkgversion}-setuptools
+%if 0%{?suse_version} == 1500
+BuildRequires:  python%{python3_pkgversion}-Sphinx
+%else
 BuildRequires:  python%{python3_pkgversion}-sphinx
+%endif
 BuildRequires:  python%{python3_pkgversion}-mock
 
 %description
@@ -27,10 +34,10 @@ Python Object Graphs :target:
 Summary:        %{summary}
 %{?python_provide:%python_provide python%{python3_pkgversion}-%{pypi_name}}
  
-%if 0%{?fedora} >= 28
+%if 0%{?fedora} >= 28 || 0%{?suse_version} == 1500
 Requires:       python%{python3_pkgversion}-graphviz
 %endif
-Requires:		graphviz
+Requires:       graphviz
 %description -n python%{python3_pkgversion}-%{pypi_name}
 Python Object Graphs :target:
 
@@ -55,7 +62,7 @@ rm -rf html/.{doctrees,buildinfo}
 %py3_install
 
 %check
-%if 0%{?fedora} >= 28
+%if 0%{?fedora} >= 28 || 0%{?suse_version} == 1500
 %{__python3} setup.py test
 %endif
 
